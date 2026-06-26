@@ -1,0 +1,8 @@
+FACTURA
+Cliente: Jose
+Laptop x1 = $1000.0
+Mouse x2 = $40.0
+Subtotal: $1040.0
+Descuento: $208.0
+Impuesto: $99.84
+TOTAL: $931.84
