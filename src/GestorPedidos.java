@@ -8,6 +8,8 @@ public class GestorPedidos {
 
     private ValidadorCliente validadorCliente = new ValidadorCliente();
 
+    private CorreoService correoService = new CorreoService();
+
     private PedidoRepository pedidoRepository;
 
     private Connection conexionBD;
@@ -51,9 +53,7 @@ public class GestorPedidos {
 
         facturaService.generarFactura(nombreCliente, nombresProductos, preciosProductos, cantidades, subtotal, descuento, impuesto, total);
 
-        System.out.println("Enviando correo a " + emailCliente + "...");
-        System.out.println("Asunto: Confirmacion de pedido");
-        System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido por $" + total + " ha sido procesado.");
+        correoService.enviarConfirmacionPedido(emailCliente, nombreCliente, total);
         System.out.println("[LOG] Pedido procesado para " + nombreCliente + " - Total: " + total);
     }
 
@@ -62,8 +62,7 @@ public class GestorPedidos {
             return;
         }
         pedidoRepository.cancelarPedido(idPedido);
-        System.out.println("Enviando correo a " + emailCliente + "...");
-        System.out.println("Asunto: Cancelacion de pedido");
-        System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido #" + idPedido + " ha sido cancelado.");
+
+        correoService.enviarCancelacionPedido(emailCliente, nombreCliente, idPedido);
     }
 }
