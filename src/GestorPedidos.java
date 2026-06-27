@@ -3,31 +3,24 @@ import java.sql.*;
 
 public class GestorPedidos {
 
-    private FacturaService facturaService = new FacturaService();
+    private final FacturaService facturaService;
+    private final ValidadorCliente validadorCliente;
+    private final CorreoService correoService;
+    private final CalculadorDescuento calculadorDescuento;
+    private final PedidoRepository pedidoRepository;
 
-    private ValidadorCliente validadorCliente = new ValidadorCliente();
-
-    private CorreoService correoService = new CorreoService();
-
-    private CalculadorDescuento calculadorDescuento =
-            new CalculadorDescuento(Arrays.asList(
-                    new DescuentoVip(),
-                    new DescuentoFrecuente(),
-                    new DescuentoRegular(),
-                    new DescuentoNuevo()
-            ));
-
-    private ConexionBD conexionBDService = new ConexionBD();
-
-    private PedidoRepository pedidoRepository;
-
-    private Connection conexionBD;
-
-
-    public GestorPedidos() {
-        this.conexionBD = conexionBDService.obtenerConexion();
-        this.pedidoRepository = new PedidoRepository(conexionBD);
+    public GestorPedidos(FacturaService facturaService,
+                         ValidadorCliente validadorCliente,
+                         CorreoService correoService,
+                         CalculadorDescuento calculadorDescuento,
+                         PedidoRepository pedidoRepository) {
+        this.facturaService = facturaService;
+        this.validadorCliente = validadorCliente;
+        this.correoService = correoService;
+        this.calculadorDescuento = calculadorDescuento;
+        this.pedidoRepository = pedidoRepository;
     }
+
 
     public void procesarPedido(String nombreCliente, String emailCliente, List<String> nombresProductos, List<Double> preciosProductos, List<Integer> cantidades, String tipoCliente) {
         if (!validadorCliente.validar(nombreCliente, emailCliente)) {

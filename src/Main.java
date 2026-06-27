@@ -1,21 +1,41 @@
-import java.util.*;
+import java.sql.Connection;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
+        ConexionBD conexionBD = new ConexionBD();
+        Connection conexion = conexionBD.obtenerConexion();
 
-        GestorPedidos gestor = new GestorPedidos();
+        PedidoRepository pedidoRepository = new PedidoRepository(conexion);
+        FacturaService facturaService = new FacturaService();
+        ValidadorCliente validadorCliente = new ValidadorCliente();
+        CorreoService correoService = new CorreoService();
 
-        List<String> productos = Arrays.asList("Laptop", "Mouse");
-        List<Double> precios = Arrays.asList(1000.0, 20.0);
-        List<Integer> cantidades = Arrays.asList(1, 2);
+        List<EstrategiaDescuento> estrategias = Arrays.asList(
+                new DescuentoVip(),
+                new DescuentoFrecuente(),
+                new DescuentoRegular(),
+                new DescuentoNuevo()
+        );
+
+        CalculadorDescuento calculadorDescuento = new CalculadorDescuento(estrategias);
+
+        GestorPedidos gestor = new GestorPedidos(
+                facturaService,
+                validadorCliente,
+                correoService,
+                calculadorDescuento,
+                pedidoRepository
+        );
 
         gestor.procesarPedido(
                 "Jose",
                 "jose@gmail.com",
-                productos,
-                precios,
-                cantidades,
+                Arrays.asList("Laptop", "Mouse"),
+                Arrays.asList(1000.0, 20.0),
+                Arrays.asList(1, 2),
                 "VIP"
         );
     }
