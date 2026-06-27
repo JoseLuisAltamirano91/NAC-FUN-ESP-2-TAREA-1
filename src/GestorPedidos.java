@@ -3,6 +3,8 @@ import java.io.*;
 import java.sql.*;
 
 public class GestorPedidos {
+    private PedidoRepository pedidoRepository;
+
     private Connection conexionBD;
 
     public GestorPedidos() {
@@ -12,6 +14,7 @@ public class GestorPedidos {
                     "jdbc:postgresql://localhost:5432/tienda",
                     "postgres",
                     "admin");
+            this.pedidoRepository = new PedidoRepository(conexionBD);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,13 +45,9 @@ public class GestorPedidos {
         }
         double impuesto = (subtotal - descuento) * 0.12;
         double total = subtotal - descuento + impuesto;
-        try {
-            Statement stmt = conexionBD.createStatement();
-            String sql = "INSERT INTO pedidos (cliente, total) VALUES ('" + nombreCliente + "', " + total + ")";
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            System.out.println("Error al guardar el pedido: " + e.getMessage());
-        }
+
+        pedidoRepository.guardarPedido(nombreCliente, total);
+
         try {
             FileWriter writer = new FileWriter("factura_" + nombreCliente + ".txt");
             writer.write("FACTURA\n");
@@ -79,13 +78,7 @@ public class GestorPedidos {
             System.out.println("Error: email invalido");
             return;
         }
-        try {
-            Statement stmt = conexionBD.createStatement();
-            String sql = "DELETE FROM pedidos WHERE id = " + idPedido;
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            System.out.println("Error al cancelar el pedido: " + e.getMessage());
-        }
+        pedidoRepository.cancelarPedido(idPedido);
         System.out.println("Enviando correo a " + emailCliente + "...");
         System.out.println("Asunto: Cancelacion de pedido");
         System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido #" + idPedido + " ha sido cancelado.");
