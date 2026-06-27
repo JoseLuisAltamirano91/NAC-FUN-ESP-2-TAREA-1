@@ -1,3 +1,10 @@
+import pedidos.config.ConexionBD;
+import pedidos.descuento.*;
+import pedidos.repository.PedidoRepository;
+import pedidos.service.CorreoService;
+import pedidos.service.FacturaService;
+import pedidos.service.ValidadorClienteService;
+
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +17,7 @@ public class Main {
 
         PedidoRepository pedidoRepository = new PedidoRepository(conexion);
         FacturaService facturaService = new FacturaService();
-        ValidadorCliente validadorCliente = new ValidadorCliente();
+        ValidadorClienteService validadorClienteService = new ValidadorClienteService();
         CorreoService correoService = new CorreoService();
 
         List<EstrategiaDescuento> estrategias = Arrays.asList(
@@ -24,7 +31,7 @@ public class Main {
 
         GestorPedidos gestor = new GestorPedidos(
                 facturaService,
-                validadorCliente,
+                validadorClienteService,
                 correoService,
                 calculadorDescuento,
                 pedidoRepository

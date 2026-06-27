@@ -1,3 +1,5 @@
+package pedidos.repository;
+
 import java.sql.*;
 
 public class PedidoRepository {

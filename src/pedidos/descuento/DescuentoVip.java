@@ -1,4 +1,6 @@
-public class DescuentoVip implements EstrategiaDescuento{
+package pedidos.descuento;
+
+public class DescuentoVip implements EstrategiaDescuento {
 
     @Override
     public boolean aplica(String tipoCliente) {

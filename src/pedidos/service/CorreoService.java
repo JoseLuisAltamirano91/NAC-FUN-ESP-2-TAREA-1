@@ -1,3 +1,5 @@
+package pedidos.service;
+
 public class CorreoService {
 
     public void enviarConfirmacionPedido(String emailCliente, String nombreCliente, double total) {

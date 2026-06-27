@@ -1,4 +1,6 @@
-public class DescuentoNuevo implements EstrategiaDescuento{
+package pedidos.descuento;
+
+public class DescuentoNuevo implements EstrategiaDescuento {
     @Override
     public boolean aplica(String tipoCliente) {
         return "NUEVO".equals(tipoCliente);

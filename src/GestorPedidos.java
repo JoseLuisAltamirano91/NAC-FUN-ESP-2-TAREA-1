@@ -1,21 +1,26 @@
+import pedidos.descuento.CalculadorDescuento;
+import pedidos.repository.PedidoRepository;
+import pedidos.service.CorreoService;
+import pedidos.service.FacturaService;
+import pedidos.service.ValidadorClienteService;
+
 import java.util.*;
-import java.sql.*;
 
 public class GestorPedidos {
 
     private final FacturaService facturaService;
-    private final ValidadorCliente validadorCliente;
+    private final ValidadorClienteService validadorClienteService;
     private final CorreoService correoService;
     private final CalculadorDescuento calculadorDescuento;
     private final PedidoRepository pedidoRepository;
 
     public GestorPedidos(FacturaService facturaService,
-                         ValidadorCliente validadorCliente,
+                         ValidadorClienteService validadorClienteService,
                          CorreoService correoService,
                          CalculadorDescuento calculadorDescuento,
                          PedidoRepository pedidoRepository) {
         this.facturaService = facturaService;
-        this.validadorCliente = validadorCliente;
+        this.validadorClienteService = validadorClienteService;
         this.correoService = correoService;
         this.calculadorDescuento = calculadorDescuento;
         this.pedidoRepository = pedidoRepository;
@@ -23,7 +28,7 @@ public class GestorPedidos {
 
 
     public void procesarPedido(String nombreCliente, String emailCliente, List<String> nombresProductos, List<Double> preciosProductos, List<Integer> cantidades, String tipoCliente) {
-        if (!validadorCliente.validar(nombreCliente, emailCliente)) {
+        if (!validadorClienteService.validar(nombreCliente, emailCliente)) {
             return;
         }
         double subtotal = 0;
@@ -45,7 +50,7 @@ public class GestorPedidos {
     }
 
     public void cancelarPedido(String nombreCliente, String emailCliente, int idPedido) {
-        if (!validadorCliente.validar(nombreCliente, emailCliente)) {
+        if (!validadorClienteService.validar(nombreCliente, emailCliente)) {
             return;
         }
         pedidoRepository.cancelarPedido(idPedido);

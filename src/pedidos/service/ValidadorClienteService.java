@@ -1,4 +1,6 @@
-public class ValidadorCliente {
+package pedidos.service;
+
+public class ValidadorClienteService {
 
     public boolean validar(String nombreCliente, String emailCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {

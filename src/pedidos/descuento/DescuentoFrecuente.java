@@ -1,3 +1,5 @@
+package pedidos.descuento;
+
 public class DescuentoFrecuente implements EstrategiaDescuento {
 
     @Override
