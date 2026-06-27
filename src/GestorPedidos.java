@@ -11,22 +11,16 @@ public class GestorPedidos {
 
     private CalculadorDescuento calculadorDescuento = new CalculadorDescuento();
 
+    private ConexionBD conexionBDService = new ConexionBD();
+
     private PedidoRepository pedidoRepository;
 
     private Connection conexionBD;
 
 
     public GestorPedidos() {
-        try {
-           // this.conexionBD = DriverManager.getConnection("jdbc:mysql://localhost:3306/tienda", "root", "admin123");
-            this.conexionBD = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/tienda",
-                    "postgres",
-                    "admin");
-            this.pedidoRepository = new PedidoRepository(conexionBD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        this.conexionBD = conexionBDService.obtenerConexion();
+        this.pedidoRepository = new PedidoRepository(conexionBD);
     }
 
     public void procesarPedido(String nombreCliente, String emailCliente, List<String> nombresProductos, List<Double> preciosProductos, List<Integer> cantidades, String tipoCliente) {
