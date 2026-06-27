@@ -3,9 +3,13 @@ import java.io.*;
 import java.sql.*;
 
 public class GestorPedidos {
+
+    private ValidadorCliente validadorCliente = new ValidadorCliente();
+
     private PedidoRepository pedidoRepository;
 
     private Connection conexionBD;
+
 
     public GestorPedidos() {
         try {
@@ -21,12 +25,7 @@ public class GestorPedidos {
     }
 
     public void procesarPedido(String nombreCliente, String emailCliente, List<String> nombresProductos, List<Double> preciosProductos, List<Integer> cantidades, String tipoCliente) {
-        if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
-            System.out.println("Error: nombre de cliente invalido");
-            return;
-        }
-        if (emailCliente == null || !emailCliente.contains("@")) {
-            System.out.println("Error: email invalido");
+        if (!validadorCliente.validar(nombreCliente, emailCliente)) {
             return;
         }
         double subtotal = 0;
@@ -70,12 +69,7 @@ public class GestorPedidos {
     }
 
     public void cancelarPedido(String nombreCliente, String emailCliente, int idPedido) {
-        if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
-            System.out.println("Error: nombre de cliente invalido");
-            return;
-        }
-        if (emailCliente == null || !emailCliente.contains("@")) {
-            System.out.println("Error: email invalido");
+        if (!validadorCliente.validar(nombreCliente, emailCliente)) {
             return;
         }
         pedidoRepository.cancelarPedido(idPedido);
