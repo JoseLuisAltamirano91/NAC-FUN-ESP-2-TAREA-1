@@ -1,18 +1,20 @@
-
+import java.util.Arrays;
+import java.util.List;
 
 public class CalculadorDescuento {
+
+    private List<EstrategiaDescuento> estrategias;
+
+    public CalculadorDescuento(List<EstrategiaDescuento> estrategias) {
+        this.estrategias = estrategias;
+    }
+
     public double calcular(String tipoCliente, double subtotal) {
-        switch (tipoCliente) {
-            case "VIP":
-                return subtotal * 0.20;
-            case "FRECUENTE":
-                return subtotal * 0.10;
-            case "REGULAR":
-                return subtotal * 0.05;
-            case "NUEVO":
-                return 0;
-            default:
-                return 0;
+        for (EstrategiaDescuento estrategia : estrategias) {
+            if (estrategia.aplica(tipoCliente)) {
+                return estrategia.calcular(subtotal);
+            }
         }
+        return 0;
     }
 }

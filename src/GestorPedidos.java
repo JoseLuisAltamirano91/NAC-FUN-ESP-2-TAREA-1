@@ -9,7 +9,13 @@ public class GestorPedidos {
 
     private CorreoService correoService = new CorreoService();
 
-    private CalculadorDescuento calculadorDescuento = new CalculadorDescuento();
+    private CalculadorDescuento calculadorDescuento =
+            new CalculadorDescuento(Arrays.asList(
+                    new DescuentoVip(),
+                    new DescuentoFrecuente(),
+                    new DescuentoRegular(),
+                    new DescuentoNuevo()
+            ));
 
     private ConexionBD conexionBDService = new ConexionBD();
 
